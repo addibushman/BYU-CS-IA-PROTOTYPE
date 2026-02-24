@@ -1,0 +1,256 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1d1d1d;
+    background: #f6f7fb;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+  }
+  
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+  
+  a {
+    color: #0b57d0;
+  }
+  
+  .app-shell {
+    min-height: 100vh;
+  }
+  
+  .top-bar {
+    background: #12335b;
+    color: white;
+    padding: 1rem 1.25rem;
+    border-bottom: 3px solid #0f2744;
+  }
+  
+  .top-bar h1 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.3rem;
+  }
+  
+  .subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.95;
+  }
+  
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .panel {
+    background: white;
+    border: 1px solid #d9dfe8;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .panel h2 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+  
+  .emphasis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .emphasis-btn {
+    border: 1px solid #b8c2cf;
+    background: #f8fbff;
+    padding: 0.7rem;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .emphasis-btn:hover {
+    background: #eef5ff;
+  }
+  
+  .emphasis-btn.selected {
+    border-color: #2c6dd2;
+    background: #e8f0ff;
+    font-weight: 600;
+  }
+  
+  .emphasis-description {
+    margin-top: 0.75rem;
+    color: #344054;
+  }
+  
+  .year-section {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-top: 0.9rem;
+    background: #fbfcff;
+  }
+  
+  .year-section h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+  }
+  
+  .year-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .bucket {
+    border: 1px solid #dbe2eb;
+    border-radius: 8px;
+    background: white;
+    padding: 0.75rem;
+  }
+  
+  .bucket h4 {
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    color: #23364d;
+  }
+  
+  .class-card {
+    width: 100%;
+    text-align: left;
+    border: 1px solid #d4dce7;
+    border-radius: 8px;
+    padding: 0.7rem;
+    background: #fff;
+    margin-bottom: 0.6rem;
+    cursor: pointer;
+  }
+  
+  .class-card:hover {
+    background: #f7fbff;
+    border-color: #9ebbe7;
+  }
+  
+  .class-card:last-child {
+    margin-bottom: 0;
+  }
+  
+  .class-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    color: #17385f;
+  }
+  
+  .class-title {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  
+  .class-short {
+    margin: 0 0 0.45rem 0;
+    color: #475467;
+    font-size: 0.92rem;
+  }
+  
+  .class-prereqs {
+    color: #344054;
+    font-size: 0.88rem;
+  }
+  
+  .class-prereqs .label {
+    font-weight: 600;
+  }
+  
+  .class-card-footer {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #0b57d0;
+  }
+  
+  .empty-text {
+    margin: 0;
+    color: #667085;
+    font-size: 0.9rem;
+  }
+  
+  .small-note {
+    color: #667085;
+    font-size: 0.85rem;
+  }
+  
+  .footer {
+    text-align: center;
+    color: #667085;
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 16, 25, 0.55);
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+  }
+  
+  .modal-panel {
+    width: min(720px, 100%);
+    max-height: 85vh;
+    overflow: auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #d6deea;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid #e7edf5;
+    padding: 0.9rem 1rem;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  .close-btn {
+    border: 1px solid #cbd5e1;
+    background: white;
+    border-radius: 6px;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+  }
+  
+  .close-btn:hover {
+    background: #f8fafc;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  @media (max-width: 850px) {
+    .year-grid {
+      grid-template-columns: 1fr;
+    }
+  }
