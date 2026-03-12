@@ -14,7 +14,8 @@ function matchesSearch(course, query) {
     course.title,
     course.shortDescription,
     course.longDescription,
-    ...(course.prereqs || [])
+    ...(course.prereqs || []),
+    ...(course.tags || [])
   ]
     .filter(Boolean)
     .join(' ')
@@ -47,8 +48,14 @@ function findFirstMatchInPlan(plan) {
 export default function App() {
   const [selectedEmphasis, setSelectedEmphasis] = useState('general');
   const [selectedCourse, setSelectedCourse] = useState(null);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('Computer Science');
+
+  // Collapsed by default so the page isn't overwhelming
+  const [collapsedYears, setCollapsedYears] = useState(() =>
+    Object.fromEntries(yearLabels.map((y) => [y, true]))
+  );
 
   const fullPlan = useMemo(() => {
     return buildPlanForEmphasis(selectedEmphasis, courses);
@@ -61,23 +68,47 @@ export default function App() {
   const emphasisMeta =
     emphases.find((e) => e.id === selectedEmphasis) ?? emphases[0];
 
-  const searchMatchedCourse = useMemo(() => {
+  const firstSearchMatch = useMemo(() => {
     if (!searchQuery.trim()) return null;
     return findFirstMatchInPlan(visiblePlan);
   }, [visiblePlan, searchQuery]);
 
-  const chipCourse = searchMatchedCourse || selectedCourse;
+  const chipCourse = firstSearchMatch || selectedCourse;
 
   const handleOpenCourse = (course) => {
     setSelectedCourse(course);
   };
 
-  const clearSearch = () => {
-    setSearchQuery('');
+  const clearSearch = () => setSearchQuery('');
+
+  const toggleYear = (yearKey) => {
+    setCollapsedYears((prev) => ({ ...prev, [yearKey]: !prev[yearKey] }));
   };
+
+  const expandAll = () => {
+    setCollapsedYears(Object.fromEntries(yearLabels.map((y) => [y, false])));
+  };
+
+  const collapseAll = () => {
+    setCollapsedYears(Object.fromEntries(yearLabels.map((y) => [y, true])));
+  };
+
+  // Nice behavior: if searching, auto-expand all so results are visible
+  const isSearching = searchQuery.trim().length > 0;
+  const effectiveCollapsedYears = isSearching
+    ? Object.fromEntries(yearLabels.map((y) => [y, false]))
+    : collapsedYears;
 
   return (
     <div className="app-shell app-shell-layout">
+      <header className="big-header">
+        <h1>BYU CS Class Guide</h1>
+        <p>
+          Explore recommended course paths by emphasis and year, and click any
+          course for details.
+        </p>
+      </header>
+
       <div className="layout-grid">
         {/* LEFT SIDEBAR */}
         <aside className="sidebar">
@@ -93,24 +124,24 @@ export default function App() {
                 className="sidebar-select"
               >
                 <option>Computer Science</option>
-                <option disabled>Information Systems (prototype)</option>
-                <option disabled>Cybersecurity (prototype)</option>
+                <option disabled>Information Systems</option>
+                <option disabled>Cybersecurity</option>
               </select>
             </div>
           </div>
 
           <div className="sidebar-block">
-            <label className="sidebar-label" htmlFor="class-search">
-              Search for a Class
+            <label className="sidebar-label" htmlFor="global-search">
+              Search
             </label>
             <div className="search-wrap">
               <span className="search-icon" aria-hidden="true">
                 🔍
               </span>
               <input
-                id="class-search"
+                id="global-search"
                 type="text"
-                placeholder=""
+                placeholder="Try: prerequisites, web, data, algorithms..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="sidebar-search"
@@ -124,11 +155,7 @@ export default function App() {
                 type="button"
                 className="selected-chip"
                 onClick={clearSearch}
-                title={
-                  searchQuery
-                    ? 'Clear search'
-                    : 'Selected course (click to clear search if active)'
-                }
+                title={isSearching ? 'Clear search' : 'Selected course'}
               >
                 <span className="chip-x" aria-hidden="true">
                   ×
@@ -140,49 +167,62 @@ export default function App() {
         </aside>
 
         {/* MAIN CONTENT */}
-        <div className="main-column">
-          <main className="content content-no-max">
-            <section className="panel">
-              <h2>1) Choose an Emphasis</h2>
-              <EmphasisSelector
-                emphases={emphases}
-                selectedEmphasis={selectedEmphasis}
-                onChange={setSelectedEmphasis}
-              />
-              <p className="emphasis-description">{emphasisMeta.description}</p>
-            </section>
+        <main className="content content-no-max">
+          <section className="panel">
+            <div className="panel-header-row">
+              <h2>Choose an Emphasis</h2>
+            </div>
 
-            <section className="panel">
-              <h2>2) Suggested Course Path by Year</h2>
-              <p className="small-note">
-                This is a prototype view. Course offerings, prereqs, and degree
-                requirements should be verified with official BYU sources.
-              </p>
+            <EmphasisSelector
+              emphases={emphases}
+              selectedEmphasis={selectedEmphasis}
+              onChange={setSelectedEmphasis}
+            />
+            <p className="emphasis-description">{emphasisMeta.description}</p>
+          </section>
 
-              {searchQuery.trim() && (
-                <p className="small-note search-status">
-                  Showing classes matching: <strong>{searchQuery}</strong>
-                </p>
+          <section className="panel">
+            <div className="panel-header-row">
+              <h2>Recommended Course Path by Year</h2>
+
+              {!isSearching && (
+                <div className="year-controls">
+                  <button type="button" className="text-btn" onClick={expandAll}>
+                    Expand all
+                  </button>
+                  <button
+                    type="button"
+                    className="text-btn"
+                    onClick={collapseAll}
+                  >
+                    Collapse all
+                  </button>
+                </div>
               )}
+            </div>
 
-              {yearLabels.map((yearKey) => (
-                <YearSection
-                  key={yearKey}
-                  yearKey={yearKey}
-                  yearData={visiblePlan[yearKey]}
-                  onOpenCourse={handleOpenCourse}
-                />
-              ))}
-            </section>
-          </main>
-        </div>
+            {isSearching && (
+              <p className="search-status">
+                Results for: <strong>{searchQuery}</strong>
+              </p>
+            )}
+
+            {yearLabels.map((yearKey) => (
+              <YearSection
+                key={yearKey}
+                yearKey={yearKey}
+                yearData={visiblePlan[yearKey]}
+                onOpenCourse={handleOpenCourse}
+                collapsed={effectiveCollapsedYears[yearKey]}
+                onToggle={() => toggleYear(yearKey)}
+              />
+            ))}
+          </section>
+        </main>
       </div>
 
       <footer className="footer">
-        <p>
-          Built for a BYU CS Information Architecture draft assignment (React
-          prototype)
-        </p>
+        <p>BYU CS course planning view</p>
       </footer>
 
       <ClassDetailModal
