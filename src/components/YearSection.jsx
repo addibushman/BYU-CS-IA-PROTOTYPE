@@ -1,47 +1,28 @@
-import ClassCard from './ClassCard';
+// ...keep the top of the file the same...
 
-function prettyYearLabel(yearKey) {
-  const map = {
-    freshman: 'Freshman',
-    sophomore: 'Sophomore',
-    junior: 'Junior',
-    senior: 'Senior'
-  };
-  return map[yearKey] || yearKey;
-}
+return (
+  <section className="year-block">
+    <button
+      type="button"
+      className="year-block-header"
+      onClick={onToggle}
+      aria-expanded={!collapsed}
+    >
+      <span className="year-arrow-box" aria-hidden="true">
+        <span className={`year-arrow ${collapsed ? 'down' : 'up'}`} />
+      </span>
 
-export default function YearSection({
-  yearKey,
-  yearData,
-  onOpenCourse,
-  collapsed,
-  onToggle
-}) {
-  const coreCount = yearData.core.length;
-  const electiveCount = yearData.elective.length;
-  const total = coreCount + electiveCount;
+      <span className="year-block-title">{prettyYearLabel(yearKey)}</span>
 
-  return (
-    <section className="year-section">
-      <button
-        type="button"
-        className="year-header"
-        onClick={onToggle}
-        aria-expanded={!collapsed}
-      >
-        <div>
-          <h3 className="year-title">{prettyYearLabel(yearKey)} Suggestions</h3>
-          <div className="year-subtitle">
-            {total} course{total === 1 ? '' : 's'} · {coreCount} core ·{' '}
-            {electiveCount} elective
-          </div>
-        </div>
+      <span className="year-block-meta">
+        {coreCount} core · {electiveCount} elective
+      </span>
+    </button>
 
-        <div className="year-chevron" aria-hidden="true">
-          {collapsed ? '▸' : '▾'}
-        </div>
-      </button>
-
+    {/* ALWAYS render the container so it reserves space */}
+    <div
+      className={`year-block-content ${collapsed ? 'is-collapsed' : 'is-open'}`}
+    >
       {!collapsed && (
         <div className="year-grid">
           <div className="bucket">
@@ -75,6 +56,6 @@ export default function YearSection({
           </div>
         </div>
       )}
-    </section>
-  );
-}
+    </div>
+  </section>
+);

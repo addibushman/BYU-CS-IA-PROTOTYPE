@@ -31,6 +31,7 @@ a {
   padding: 1.25rem 1rem 0.5rem;
 }
 
+/* Layout */
 .layout-grid {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
@@ -38,7 +39,28 @@ a {
   align-items: start;
 }
 
-/* LEFT SIDEBAR */
+/* Big header */
+.big-header {
+  background: #12335b;
+  color: white;
+  border: 1px solid #0f2744;
+  border-radius: 12px;
+  padding: 1.2rem 1.25rem;
+  margin: 0 auto 1rem;
+  max-width: 1300px;
+}
+
+.big-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.7rem;
+}
+
+.big-header p {
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* Sidebar */
 .sidebar {
   padding: 0.25rem 0.25rem 0 0.25rem;
 }
@@ -134,11 +156,7 @@ a {
   line-height: 1;
 }
 
-/* MAIN AREA */
-.main-column {
-  min-width: 0;
-}
-
+/* Main content */
 .content {
   max-width: 1200px;
   margin: 0 auto;
@@ -162,6 +180,38 @@ a {
   font-size: 1.1rem;
 }
 
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.year-controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.text-btn {
+  border: none;
+  background: transparent;
+  color: #0b57d0;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.text-btn:hover {
+  text-decoration: underline;
+}
+
+.search-status {
+  margin: 0.25rem 0 0.75rem 0;
+  color: #667085;
+  font-size: 0.9rem;
+}
+
+/* Emphasis */
 .emphasis-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -192,17 +242,85 @@ a {
   color: #344054;
 }
 
-.year-section {
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 0.75rem;
+/* Year accordion */
+.year-block {
   margin-top: 0.9rem;
-  background: #fbfcff;
 }
 
-.year-section h3 {
-  margin: 0 0 0.75rem 0;
-  font-size: 1rem;
+.year-block-header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+
+  border: 1px solid #dbe2eb;
+  border-radius: 10px;
+  background: white;
+
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.year-block-header:hover {
+  background: #f7fbff;
+  border-color: #9ebbe7;
+}
+
+.year-arrow-box {
+  width: 56px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid #dbe2eb;
+  background: #f3f4f6;
+  display: grid;
+  place-items: center;
+}
+
+/* Triangle arrow */
+.year-arrow {
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 18px solid #111; /* down */
+}
+
+.year-arrow.up {
+  border-top: none;
+  border-bottom: 18px solid #111; /* up */
+}
+
+.year-block-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.year-block-meta {
+  font-size: 0.95rem;
+  color: #667085;
+  white-space: nowrap;
+}
+
+/* Content container ALWAYS reserves space so the page doesn't shrink */
+.year-block-content {
+  margin-top: 0.6rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fbfcff;
+  padding: 0.9rem;
+  width: 100%;
+  display: block;
+}
+
+.year-block-content.is-collapsed {
+  min-height: 240px; /* keeps expanded-like page height when collapsed */
+}
+
+.year-block-content.is-open {
+  min-height: 0;
 }
 
 .year-grid {
@@ -211,6 +329,7 @@ a {
   gap: 0.75rem;
 }
 
+/* Buckets + cards (unchanged look) */
 .bucket {
   border: 1px solid #dbe2eb;
   border-radius: 8px;
@@ -285,16 +404,7 @@ a {
   font-size: 0.9rem;
 }
 
-.small-note {
-  color: #667085;
-  font-size: 0.85rem;
-}
-
-.search-status {
-  margin-top: 0.35rem;
-  margin-bottom: 0.25rem;
-}
-
+/* Footer */
 .footer {
   text-align: center;
   color: #667085;
@@ -354,6 +464,25 @@ a {
   padding: 1rem;
 }
 
+/* --- Force the main column + panels to always use full available width --- */
+.content,
+.content-no-max,
+main.content {
+  width: 100%;
+  min-width: 0;
+}
+
+.panel {
+  width: 100%;
+}
+
+.year-block,
+.year-block-header,
+.year-block-content {
+  width: 100%;
+}
+
+/* Responsive */
 @media (max-width: 980px) {
   .layout-grid {
     grid-template-columns: 1fr;
@@ -370,5 +499,21 @@ a {
 @media (max-width: 850px) {
   .year-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .year-block-header {
+    grid-template-columns: 64px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .year-block-meta {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  .year-block-title {
+    font-size: 1.1rem;
   }
 }
