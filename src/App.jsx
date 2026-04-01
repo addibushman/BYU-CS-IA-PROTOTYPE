@@ -44,7 +44,6 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('Computer Science');
 
-  // Start collapsed to reduce overwhelm
   const [collapsedYears, setCollapsedYears] = useState(() =>
     Object.fromEntries(yearLabels.map((y) => [y, true]))
   );
@@ -73,15 +72,13 @@ export default function App() {
   };
 
   const isSearching = searchQuery.trim().length > 0;
-
-  // When searching, auto-expand so results are visible
   const effectiveCollapsedYears = isSearching
     ? Object.fromEntries(yearLabels.map((y) => [y, false]))
     : collapsedYears;
 
   return (
     <div className="app-shell app-shell-layout">
-      {/* Full-width header with right-side search */}
+      {/* Full-width header with Department + Search */}
       <header className="big-header big-header-full">
         <div className="header-left">
           <h1>BYU CS Class Guide</h1>
@@ -89,6 +86,27 @@ export default function App() {
             Explore recommended course paths by emphasis and year, and click any
             course for details.
           </p>
+
+          {/* Department moved here */}
+          <div className="header-controls">
+            <div className="header-control">
+              <label className="header-control-label" htmlFor="dept-select">
+                Department
+              </label>
+              <div className="select-wrap header-select-wrap">
+                <select
+                  id="dept-select"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  className="header-select"
+                >
+                  <option>Computer Science</option>
+                  <option disabled>Information Systems</option>
+                  <option disabled>Cybersecurity</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="header-right">
@@ -111,29 +129,8 @@ export default function App() {
         </div>
       </header>
 
-      <div className="layout-grid">
-        {/* LEFT SIDEBAR */}
-        <aside className="sidebar">
-          <div className="sidebar-block">
-            <label className="sidebar-label" htmlFor="dept-select">
-              Department
-            </label>
-            <div className="select-wrap">
-              <select
-                id="dept-select"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className="sidebar-select"
-              >
-                <option>Computer Science</option>
-                <option disabled>Information Systems</option>
-                <option disabled>Cybersecurity</option>
-              </select>
-            </div>
-          </div>
-        </aside>
-
-        {/* MAIN CONTENT */}
+      {/* Main content is now centered (no sidebar column) */}
+      <div className="layout-grid" style={{ gridTemplateColumns: '1fr' }}>
         <main className="content content-no-max">
           <section className="panel">
             <h2>Choose an Emphasis</h2>

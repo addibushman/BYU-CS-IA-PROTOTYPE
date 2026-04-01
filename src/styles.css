@@ -516,3 +516,34 @@ main.content {
     font-size: 1.15rem;
   }
 }
+
+.header-controls {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-control-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem 0.1rem;
+  opacity: 0.95;
+}
+
+.header-select {
+  width: 260px;
+  max-width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 0.55rem 2rem 0.55rem 0.8rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.header-select-wrap::after {
+  color: rgba(255, 255, 255, 0.9);
+}
