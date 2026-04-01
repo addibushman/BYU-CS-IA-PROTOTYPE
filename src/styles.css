@@ -1,5 +1,7 @@
 :root {
+  /* consistent font sizing */
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
   color: #1d1d1d;
   background: #f6f7fb;
 }
@@ -39,25 +41,80 @@ a {
   align-items: start;
 }
 
-/* Big header */
+/* Full-width header */
 .big-header {
   background: #12335b;
   color: white;
   border: 1px solid #0f2744;
   border-radius: 12px;
-  padding: 1.2rem 1.25rem;
-  margin: 0 auto 1rem;
-  max-width: 1300px;
+  padding: 1.1rem 1.25rem;
+  margin: 0 0 1rem 0;
 }
 
-.big-header h1 {
+.big-header-full {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.header-left h1 {
   margin: 0 0 0.25rem 0;
-  font-size: 1.7rem;
+  font-size: 2rem;
+  line-height: 1.15;
 }
 
-.big-header p {
+.header-left p {
   margin: 0;
   opacity: 0.95;
+  font-size: 1rem;
+}
+
+.header-right {
+  min-width: 320px;
+  width: min(460px, 40vw);
+}
+
+.header-search-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem 0.1rem;
+  opacity: 0.95;
+}
+
+.header-search-wrap {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.header-search {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 0.55rem 0.9rem 0.55rem 2.1rem;
+  outline: none;
+}
+
+.header-search::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.header-search:focus {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
 }
 
 /* Sidebar */
@@ -72,7 +129,7 @@ a {
 .sidebar-label {
   display: block;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin-bottom: 0.45rem;
   color: #171717;
 }
@@ -86,9 +143,10 @@ a {
   border: 1px solid #b8c2cf;
   border-radius: 999px;
   background: #fff;
-  padding: 0.5rem 2rem 0.5rem 0.8rem;
+  padding: 0.55rem 2rem 0.55rem 0.8rem;
   cursor: pointer;
   appearance: none;
+  font-size: 1rem;
 }
 
 .select-wrap::after {
@@ -99,72 +157,18 @@ a {
   transform: translateY(-50%);
   color: #222;
   pointer-events: none;
-  font-size: 0.9rem;
-}
-
-.search-wrap {
-  position: relative;
-}
-
-.search-icon {
-  position: absolute;
-  left: 0.8rem;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0.75;
-  font-size: 0.9rem;
-  pointer-events: none;
-}
-
-.sidebar-search {
-  width: 100%;
-  border: 1px solid #b8c2cf;
-  border-radius: 999px;
-  background: #fff;
-  padding: 0.5rem 0.8rem 0.5rem 2rem;
-  outline: none;
-}
-
-.sidebar-search:focus {
-  border-color: #8aaee7;
-  box-shadow: 0 0 0 2px rgba(138, 174, 231, 0.2);
-}
-
-.selected-chip-row {
-  margin-top: 0.25rem;
-}
-
-.selected-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  border: none;
-  border-radius: 999px;
-  padding: 0.35rem 0.8rem;
-  background: #f08df0;
-  color: #171717;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.selected-chip:hover {
-  filter: brightness(0.98);
-}
-
-.chip-x {
-  font-size: 1.1rem;
-  line-height: 1;
+  font-size: 0.95rem;
 }
 
 /* Main content */
-.content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0;
-}
-
-.content-no-max {
+.content,
+.content-no-max,
+main.content {
+  width: 100%;
+  min-width: 0;
   max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 .panel {
@@ -173,11 +177,13 @@ a {
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .panel h2 {
-  margin-top: 0;
-  font-size: 1.1rem;
+  margin: 0 0 0.6rem 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
 .panel-header-row {
@@ -189,7 +195,7 @@ a {
 
 .year-controls {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.9rem;
 }
 
 .text-btn {
@@ -198,7 +204,7 @@ a {
   color: #0b57d0;
   cursor: pointer;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .text-btn:hover {
@@ -208,7 +214,7 @@ a {
 .search-status {
   margin: 0.25rem 0 0.75rem 0;
   color: #667085;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 /* Emphasis */
@@ -221,10 +227,11 @@ a {
 .emphasis-btn {
   border: 1px solid #b8c2cf;
   background: #f8fbff;
-  padding: 0.7rem;
+  padding: 0.75rem;
   text-align: left;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
 }
 
 .emphasis-btn:hover {
@@ -240,6 +247,7 @@ a {
 .emphasis-description {
   margin-top: 0.75rem;
   color: #344054;
+  font-size: 1rem;
 }
 
 /* Year accordion */
@@ -258,7 +266,7 @@ a {
   border-radius: 10px;
   background: white;
 
-  padding: 0.9rem 1rem;
+  padding: 0.95rem 1rem;
   cursor: pointer;
   text-align: left;
 }
@@ -299,12 +307,12 @@ a {
 }
 
 .year-block-meta {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #667085;
   white-space: nowrap;
 }
 
-/* Content container: hidden when collapsed, styled when open (NO empty blocks) */
+/* Content container hidden when collapsed (no empty blocks) */
 .year-block-content {
   width: 100%;
   display: block;
@@ -337,9 +345,8 @@ a {
 }
 
 .bucket h4 {
-  margin-top: 0;
-  margin-bottom: 0.6rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.6rem 0;
+  font-size: 1.05rem;
   color: #23364d;
 }
 
@@ -352,6 +359,7 @@ a {
   background: #fff;
   margin-bottom: 0.6rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 
 .class-card:hover {
@@ -379,12 +387,12 @@ a {
 .class-short {
   margin: 0 0 0.45rem 0;
   color: #475467;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
 }
 
 .class-prereqs {
   color: #344054;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
 }
 
 .class-prereqs .label {
@@ -393,14 +401,14 @@ a {
 
 .class-card-footer {
   margin-top: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #0b57d0;
 }
 
 .empty-text {
   margin: 0;
   color: #667085;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* Footer */
@@ -408,7 +416,7 @@ a {
   text-align: center;
   color: #667085;
   padding: 0.6rem 1rem 0.8rem;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 
 /* Modal */
@@ -463,18 +471,6 @@ a {
   padding: 1rem;
 }
 
-/* Force main column to full width */
-.content,
-.content-no-max,
-main.content {
-  width: 100%;
-  min-width: 0;
-}
-
-.panel {
-  width: 100%;
-}
-
 /* Responsive */
 @media (max-width: 980px) {
   .layout-grid {
@@ -486,6 +482,16 @@ main.content {
     background: #fff;
     border-radius: 10px;
     padding: 0.9rem;
+  }
+
+  .big-header-full {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-right {
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -507,6 +513,6 @@ main.content {
   }
 
   .year-block-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 }

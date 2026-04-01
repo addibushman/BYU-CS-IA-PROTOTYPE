@@ -37,14 +37,6 @@ function filterPlanBySearch(plan, query) {
   return filtered;
 }
 
-function findFirstMatchInPlan(plan) {
-  for (const year of Object.keys(plan)) {
-    if (plan[year].core.length > 0) return plan[year].core[0];
-    if (plan[year].elective.length > 0) return plan[year].elective[0];
-  }
-  return null;
-}
-
 export default function App() {
   const [selectedEmphasis, setSelectedEmphasis] = useState('general');
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -52,7 +44,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('Computer Science');
 
-  // Collapsed by default so the page isn't overwhelming
+  // Start collapsed to reduce overwhelm
   const [collapsedYears, setCollapsedYears] = useState(() =>
     Object.fromEntries(yearLabels.map((y) => [y, true]))
   );
@@ -68,19 +60,6 @@ export default function App() {
   const emphasisMeta =
     emphases.find((e) => e.id === selectedEmphasis) ?? emphases[0];
 
-  const firstSearchMatch = useMemo(() => {
-    if (!searchQuery.trim()) return null;
-    return findFirstMatchInPlan(visiblePlan);
-  }, [visiblePlan, searchQuery]);
-
-  const chipCourse = firstSearchMatch || selectedCourse;
-
-  const handleOpenCourse = (course) => {
-    setSelectedCourse(course);
-  };
-
-  const clearSearch = () => setSearchQuery('');
-
   const toggleYear = (yearKey) => {
     setCollapsedYears((prev) => ({ ...prev, [yearKey]: !prev[yearKey] }));
   };
@@ -93,20 +72,43 @@ export default function App() {
     setCollapsedYears(Object.fromEntries(yearLabels.map((y) => [y, true])));
   };
 
-  // Nice behavior: if searching, auto-expand all so results are visible
   const isSearching = searchQuery.trim().length > 0;
+
+  // When searching, auto-expand so results are visible
   const effectiveCollapsedYears = isSearching
     ? Object.fromEntries(yearLabels.map((y) => [y, false]))
     : collapsedYears;
 
   return (
     <div className="app-shell app-shell-layout">
-      <header className="big-header">
-        <h1>BYU CS Class Guide</h1>
-        <p>
-          Explore recommended course paths by emphasis and year, and click any
-          course for details.
-        </p>
+      {/* Full-width header with right-side search */}
+      <header className="big-header big-header-full">
+        <div className="header-left">
+          <h1>BYU CS Class Guide</h1>
+          <p>
+            Explore recommended course paths by emphasis and year, and click any
+            course for details.
+          </p>
+        </div>
+
+        <div className="header-right">
+          <label className="header-search-label" htmlFor="global-search">
+            Search
+          </label>
+          <div className="header-search-wrap">
+            <span className="search-icon" aria-hidden="true">
+              🔍
+            </span>
+            <input
+              id="global-search"
+              type="text"
+              placeholder="Try: prerequisites, web, data, algorithms..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="header-search"
+            />
+          </div>
+        </div>
       </header>
 
       <div className="layout-grid">
@@ -129,50 +131,12 @@ export default function App() {
               </select>
             </div>
           </div>
-
-          <div className="sidebar-block">
-            <label className="sidebar-label" htmlFor="global-search">
-              Search
-            </label>
-            <div className="search-wrap">
-              <span className="search-icon" aria-hidden="true">
-                🔍
-              </span>
-              <input
-                id="global-search"
-                type="text"
-                placeholder="Try: prerequisites, web, data, algorithms..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="sidebar-search"
-              />
-            </div>
-          </div>
-
-          {chipCourse && (
-            <div className="selected-chip-row">
-              <button
-                type="button"
-                className="selected-chip"
-                onClick={clearSearch}
-                title={isSearching ? 'Clear search' : 'Selected course'}
-              >
-                <span className="chip-x" aria-hidden="true">
-                  ×
-                </span>
-                <span>{chipCourse.code}</span>
-              </button>
-            </div>
-          )}
         </aside>
 
         {/* MAIN CONTENT */}
         <main className="content content-no-max">
           <section className="panel">
-            <div className="panel-header-row">
-              <h2>Choose an Emphasis</h2>
-            </div>
-
+            <h2>Choose an Emphasis</h2>
             <EmphasisSelector
               emphases={emphases}
               selectedEmphasis={selectedEmphasis}
@@ -212,7 +176,7 @@ export default function App() {
                 key={yearKey}
                 yearKey={yearKey}
                 yearData={visiblePlan[yearKey]}
-                onOpenCourse={handleOpenCourse}
+                onOpenCourse={(course) => setSelectedCourse(course)}
                 collapsed={effectiveCollapsedYears[yearKey]}
                 onToggle={() => toggleYear(yearKey)}
               />
